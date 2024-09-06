@@ -32,6 +32,7 @@ public class Productor extends Thread {
             }
         }
 
+        // Agregar producto "FIN_AZUL" o "FIN_NARANJA" según el color del productor
         Producto finProducto = new Producto(generador.darNumId(), color, "FIN_" + color.toUpperCase());
         while (depositoProduccion.almacenar(finProducto)) {
             synchronized (depositoProduccion) {

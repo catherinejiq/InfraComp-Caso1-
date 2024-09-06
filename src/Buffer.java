@@ -12,6 +12,7 @@ public class Buffer {
     }
 
     public synchronized Boolean almacenar(Producto producto) {
+        // Si el depósito está lleno, retornamos true para esperar
         if (this.arregloProductos.size() == this.tamanio) {
             return true; 
         } else {
@@ -21,43 +22,28 @@ public class Buffer {
             } else {
                 this.cantNaranjas++;
             }
+            // Notificamos a otros hilos que hay un nuevo producto
+            notifyAll();
             return false;
         }
     }
 
-    public synchronized Producto retirar(String color) {
+    public synchronized Producto retirar() {
         Producto producto = null;
-        if (color.equals("azul") && this.cantAzules > 0) {
-            for (int i = 0; i < this.arregloProductos.size(); i++) {
-                if (this.arregloProductos.get(i).getColor().equals("azul")) {
-                    producto = this.arregloProductos.remove(i);
-                    this.cantAzules--;
-                    break;
-                }
-                
-            }
-        } else if (color.equals("naranja") && this.cantNaranjas > 0) {
-            for (int i = 0; i < this.arregloProductos.size(); i++) {
-                if (this.arregloProductos.get(i).getColor().equals("naranja")) {
-                    producto = this.arregloProductos.remove(i);
-                    this.cantNaranjas--;
-                    break;
-                }
+        while (this.arregloProductos.isEmpty()) {
+            try {
+                wait(); // Esperar si no hay productos disponibles
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt(); // Manejar interrupción
             }
         }
-        return producto;
-    }
-
-
-    public synchronized Producto buscarProducto(Integer id) {
-        Producto producto = null;
-        for (int i = 0; i < arregloProductos.size(); i++) {
-            if (arregloProductos.get(i).getId().equals(id)) {
-                producto = arregloProductos.remove(i);
-                break;
-            }
+        producto = this.arregloProductos.remove(0); // Retira el primer producto
+        // Actualiza el conteo basado en el color del producto retirado
+        if (producto.getColor().equals("azul")) {
+            this.cantAzules--;
+        } else if (producto.getColor().equals("naranja")) {
+            this.cantNaranjas--;
         }
         return producto;
     }
 }
-
