@@ -31,6 +31,16 @@ public class Productor extends Thread {
                 depositoProduccion.notifyAll();
             }
         }
-//faltaría poner algo para que se identifique que el proceso de producir un producto terminó pero no sé cómo hacerlo
+
+        Producto finProducto = new Producto(generador.darNumId(), color, "FIN_" + color.toUpperCase());
+        while (depositoProduccion.almacenar(finProducto)) {
+            synchronized (depositoProduccion) {
+                try { depositoProduccion.wait(); } catch (InterruptedException e) { e.printStackTrace(); }
+            }
+        }
+
+        synchronized (depositoProduccion) {
+            depositoProduccion.notifyAll();
+        }
     }
 }

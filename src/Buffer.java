@@ -24,7 +24,7 @@ public class Buffer {
             return false;
         }
     }
-/** 
+
     public synchronized Producto retirar(String color) {
         Producto producto = null;
         if (color.equals("azul") && this.cantAzules > 0) {
@@ -47,7 +47,7 @@ public class Buffer {
         }
         return producto;
     }
-    */
+
 
     public synchronized Producto buscarProducto(Integer id) {
         Producto producto = null;
