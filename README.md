@@ -6,4 +6,6 @@ En este proyecto se intenta simular el comportamiento de una fábrica con proces
 
 Paola Catherine Jimenez Jaque - 202116886
 
+Johan Alejandro Charry Acevedo - 202111151
+
 

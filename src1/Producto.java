@@ -15,4 +15,3 @@ public class Producto {
     public void setMensaje(String mensaje) { this.mensaje = mensaje; }
     public void modificarMensaje(String nuevoMensaje) { this.mensaje += nuevoMensaje; }
 }
-
